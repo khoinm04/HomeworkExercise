@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Account Mới</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 50px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="form-container">
+                <h1 class="text-center mb-4"><i class="fas fa-user-plus me-2"></i> Thêm Account Mới</h1>
+
+                <form th:action="@{/admin/accounts/create}" method="post" th:object="${newAccount}">
+                    <div class="row g-3">
+                        <div class="row mb-3">
+                            <label for="accountName" class="form-label">Tên Account</label>
+                            <input type="text" class="form-control" id="accountName" name="accountName"
+                                   th:field="*{accountName}" placeholder="Nhập tên" required>
+                        </div>
+                        <br>
+                        <div class="row mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" th:field="*{email}"
+                                   placeholder="Nhập email" required>
+                        </div>
+                        <br>
+                        <div class="row mb-3">
+                            <label for="password" class="form-label">Mật Khẩu</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                   th:field="*{password}" placeholder="Nhập mật khẩu" required>
+                        </div>
+                        <div class="row mb-6">
+                            <label for="role" class="form-label">Vai Trò</label>
+                            <select type="text" class="form-control" id="role" th:field="*{role}" required>
+                                <option value="" selected disabled>Chọn vai trò</option>
+                                <option th:each="role : ${roles}"
+                                        th:value="${role.roleId}"
+                                        th:text="${role.roleName}"
+                                ></option>
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-plus me-2"></i> Thêm Account
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mb-4">
+                    <a th:href="@{/admin/dashboard}" class="btn btn-success">DashBoard</a>
+                </div>
+            </div>
+            <!-- Thông báo lỗi mẫu (nếu có) -->
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <span th:text="${error}"></span>
+            </div>
+            <div th:if="${success}" class="alert alert-success" role="alert"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

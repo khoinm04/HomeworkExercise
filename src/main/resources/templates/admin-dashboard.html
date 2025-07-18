@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Orchid Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="text-center">Admin Dashboard</h1>
+
+    <div class="text-center mb-4">
+        <a th:href="@{/admin/create-account-admin}" class="btn btn-success">Thêm Account Mới</a>
+        <a th:href="@{/admin/create-orchid-admin}" class="btn btn-primary">Thêm Orchid Mới</a>
+        <a th:href="@{/admin/orders/create}" class="btn btn-info">Tạo Order Mới</a>
+        <a th:href="@{/logout}" class="btn btn-success">Đăng Xuất</a>
+
+        <!-- CRUD Accounts -->
+        <section class="mb-5">
+            <h3 class="text-center">Quản Lý Account</h3>
+            <!-- table user   -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Email</th>
+                    <th>Hành Động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="account : ${accounts}">
+                    <td th:text="${account.accountId}"></td>
+                    <td th:text="${account.accountName}"></td>
+                    <td th:text="${account.email}"></td>
+                    <td th:text="${account.role.roleName}"></td>
+                    <td>
+                        <a th:href="@{/admin/accounts/edit/{id}(id=${account.accountId})}"
+                           class="btn btn-sm btn-warning" onclick="return confirm('Bạn có chắc chắn muốn sửa account này không?')">Sửa</a>
+                        <a th:href="@{/admin/accounts/delete/{id}(id=${account.accountId})}"
+                           class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa account này không?')">Xóa</a>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <!-- CRUD Orchids -->
+        <section class="mb-5">
+            <h3 class="text-center">Quản Lý Orchid</h3>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ảnh</th>
+                    <th>Mô tả</th>
+                    <th>Tên</th>
+                    <th>Giá</th>
+                    <th>Kiểu</th>
+                    <th>Loại</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orchid : ${orchids}">
+                    <td th:text="${orchid.orchidId}"></td>
+                    <td><img th:src="${orchid.orchidUrl}" style="height: 100px; object-fit: cover;"></td>
+                    <td th:text="${orchid.orchidDescription}"></td>
+                    <td th:text="${orchid.orchidName}"></td>
+                    <td th:text="${orchid.price}"></td>
+                    <td th:text="${orchid.category.categoryName}"></td>
+                    <td th:text="${orchid.isNatural ? 'Tự nhiên' : 'Lai tạo'}"></td>
+                    <td>
+                        <a th:href="@{/admin/orchids/edit/{id}(id=${orchid.orchidId})}"
+                           class="btn btn-sm btn-warning" onclick="return confirm('Bạn có chắc chắn muốn sửa orchid này không?')">Sửa</a>
+                        <a th:href="@{/admin/orchids/delete/{id}(id=${orchid.orchidId})}"
+                           class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa orchid này không?')">Xóa</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+        <!-- CRUD Orders -->
+        <section class="mb-5">
+            <h3 class="text-center">Quản Lý Order</h3>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ngày</th>
+                    <th>Tổng Tiền</th>
+                    <th>Trạng Thái</th>
+                    <th>Hành Động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.orderDate}"></td>
+                    <td th:text="${order.totalAmount}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                    <td>
+                        <a th:href="@{/admin/orders/delete/{id}(id=${order.id})}" class="btn btn-sm btn-danger">Xóa</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
