@@ -28,11 +28,9 @@
     <div class="card mt-4 shadow-sm mx-auto" style="max-width: 500px;">
         <div class="card-body text-start" th:object="${order}">
             <h5 class="card-title">Thông tin đơn hàng</h5>
-            <p><strong>Tên người nhận:</strong> <span th:text="${customerName}">Tên người nhận</span></p>
-            <p><strong>Email:</strong> <span th:text="${email}">email@example.com</span></p>
-            <p><strong>Địa chỉ giao hàng:</strong> <span th:text="${address}">123 Đường ABC, Quận XYZ</span></p>
-            <p><strong>Số điện thoại:</strong> <span th:text="${phone}">0123456789</span></p>
-            <p><strong>Tổng tiền:</strong> <span th:text="${#numbers.formatCurrency(total)}">0 VND</span></p>
+            <p><strong>Tên người nhận:</strong> <span th:text="${order.account.accountName}">Tên người nhận</span></p>
+            <p><strong>Email:</strong> <span th:text="${order.account.email}">email@example.com</span></p>
+            <p><strong>Tổng tiền:</strong> <span th:text="${order.totalAmount}">0 VND</span></p>
         </div>
     </div>
 
