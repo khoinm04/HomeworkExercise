@@ -58,6 +58,35 @@ public class AdminController {
         return "admin-dashboard";
     }
 
+    @PostMapping("/accounts/create")
+    public String createAccount(@Valid @ModelAttribute("newAccount") Account newAccount, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            List<Role> roles = roleService.getAllRoles();
+            model.addAttribute("roles", roles);
+            model.addAttribute("newAccount", newAccount);
+            model.addAttribute("error", "Có lỗi trong quá trình tạo tài khoản: " + result.getAllErrors().get(0).getDefaultMessage());
+            return "create-account-admin";
+        }
+        try {
+            if (accountService.existsByEmail(newAccount.getEmail())) {
+                model.addAttribute("error", "Email đã tồn tại!");
+                List<Role> roles = roleService.getAllRoles();
+                model.addAttribute("roles", roles);
+                model.addAttribute("newAccount", newAccount);
+                return "create-account-admin";
+            }
+            accountService.saveAccount(newAccount);
+            redirectAttributes.addFlashAttribute("success", "Tạo tài khoản thành công!");
+            return "redirect:/admin/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", "Có lỗi trong quá trình tạo tài khoản: " + e.getMessage());
+            List<Role> roles = roleService.getAllRoles();
+            model.addAttribute("roles", roles);
+            model.addAttribute("newAccount", newAccount);
+            return "create-account-admin";
+        }
+    }
+
     @GetMapping("/create-account-admin")
     public String showCreateAccountForm(Model model , HttpSession session) {
         Account account = (Account) session.getAttribute("account");
