@@ -27,12 +27,12 @@ public class OrderDetail {
     private Integer quantity;
 
     @NotNull(message = "Đơn hàng không được để trống")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @NotNull(message = "Sản phẩm không được để trống")
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "orchid_id")
     private Orchid orchid;
 
@@ -45,6 +45,7 @@ public class OrderDetail {
         this.order = order;
         this.orchid = orchid;
     }
+
 
     // Getters and Setters
     public Long getId() { return id; }

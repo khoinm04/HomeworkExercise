@@ -34,14 +34,17 @@ public class OrderServiceImpl implements OrderService{
 
         order.setTotalAmount(totalAmount);
 
+        System.out.println("Total Amount: " + totalAmount);
         // ✅ Gán order vào chi tiết trước khi lưu
         for (OrderDetail detail : orderDetails) {
             detail.setOrder(order);
         }
+        System.out.println("Order Details: " + orderDetails);
 
         // ✅ Gán danh sách chi tiết vào order
         order.setOrderDetails(orderDetails);
 
+        System.out.println("Order Details after setting: " + order.getOrderDetails());
         // ✅ Lưu order (với cascade ALL thì các orderDetails sẽ được lưu cùng)
         order = orderRepository.save(order);
 

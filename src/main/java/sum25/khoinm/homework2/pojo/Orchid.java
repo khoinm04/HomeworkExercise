@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "orchids")
@@ -41,8 +42,9 @@ public class Orchid {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToOne(mappedBy = "orchid")
-    private OrderDetail orderDetail;
+
+    @OneToMany(mappedBy = "orchid")
+    private List<OrderDetail> orderDetail;
 
     // Constructors
     public Orchid() {}
@@ -55,6 +57,26 @@ public class Orchid {
         this.isNatural = isNatural;
         this.orchidUrl = orchidUrl;
         this.category = category;
+    }
+    public Orchid(Long orchidId, Boolean isNatural, String orchidDescription, String orchidName,
+                  String orchidUrl, BigDecimal price, Category category) {
+        this.orchidId = orchidId;
+        this.isNatural = isNatural;
+        this.orchidDescription = orchidDescription;
+        this.orchidName = orchidName;
+        this.orchidUrl = orchidUrl;
+        this.price = price;
+        this.category = category;
+    }
+
+    public Orchid(Boolean isNatural, String orchidDescription, String orchidName, String orchidUrl, BigDecimal price, Category category, List<OrderDetail> orderDetail) {
+        this.isNatural = isNatural;
+        this.orchidDescription = orchidDescription;
+        this.orchidName = orchidName;
+        this.orchidUrl = orchidUrl;
+        this.price = price;
+        this.category = category;
+        this.orderDetail = orderDetail;
     }
 
     // Getters and Setters
@@ -79,6 +101,19 @@ public class Orchid {
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
 
-    public OrderDetail getOrderDetail() { return orderDetail; }
-    public void setOrderDetail(OrderDetail orderDetail) { this.orderDetail = orderDetail; }
+    public Boolean getNatural() {
+        return isNatural;
+    }
+
+    public void setNatural(Boolean natural) {
+        isNatural = natural;
+    }
+
+    public List<OrderDetail> getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(List<OrderDetail> orderDetail) {
+        this.orderDetail = orderDetail;
+    }
 }

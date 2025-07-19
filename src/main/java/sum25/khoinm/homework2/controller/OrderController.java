@@ -5,13 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import sum25.khoinm.homework2.pojo.Account;
-import sum25.khoinm.homework2.pojo.CartItem;
-import sum25.khoinm.homework2.pojo.Order;
-import sum25.khoinm.homework2.pojo.OrderDetail;
+import sum25.khoinm.homework2.pojo.*;
 import sum25.khoinm.homework2.service.OrderDetailService;
 import sum25.khoinm.homework2.service.OrderService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -31,9 +29,24 @@ public class OrderController {
             if (cart == null || cart.isEmpty()) {
                 return "redirect:/cart"; // Redirect to cart if it's empty
             }
-            Order order = orderService.createOrder((Account) session.getAttribute("account"), cart.values()
-                    .stream()
-                    .map(item -> new OrderDetail(item.getOrchid().getPrice(), item.getQuantity(), null, item.getOrchid()))
+
+            Map<Orchid, CartItem> mergedItems = new HashMap<>();
+            for (CartItem item : cart.values()) {
+                Orchid orchid = item.getOrchid();
+                mergedItems.compute(orchid, (k, v) -> {
+                    if (v == null) return item;
+                    v.setQuantity(v.getQuantity() + item.getQuantity()); // Gộp quantity
+                    return v;
+                });
+            }
+
+            Order order = orderService.createOrder((Account) session.getAttribute("account"), mergedItems.values().stream()
+                    .map(item -> new OrderDetail(
+                            item.getOrchid().getPrice(),
+                            item.getQuantity(),
+                            null,
+                            item.getOrchid()
+                    ))
                     .toList());
 
             return "confirmation"; // Redirect to confirmation page after successful checkout
